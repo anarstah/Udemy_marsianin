@@ -20,7 +20,33 @@ const movieDB = {
         "Лига справедливости",
         "Ла-ла лэнд",
         "Одержимость",
-        "Скотт Пилигрим против..."
+        "Брюс Всемогущий"
     ]
 };
+
+const advertising = document.querySelector('.promo__adv'),
+    genre = document.querySelector('.promo__genre'),
+    bg = document.querySelector('.promo__bg'),
+    films = document.querySelectorAll('.promo__interactive-item');
+
+
+function test() {
+    advertising.remove();
+
+    genre.innerHTML = "драма";
+
+    bg.style.cssText = 'background : url("../img/bg.jpg");';
+
+    let i = 0;
+    films.forEach(item =>{
+        let film = movieDB.movies[i];
+        item.innerHTML = film;
+        i++
+    });
+
+}
+
+test ();
+
+
 
