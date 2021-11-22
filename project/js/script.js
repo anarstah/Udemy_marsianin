@@ -14,6 +14,11 @@
 
 'use strict';
 
+const adv = document.querySelectorAll('.promo__adv img'),
+    poster = document.querySelector('.promo__bg'),
+    genre = poster.querySelector('.promo__genre'),
+    films = document.querySelector('.promo__interactive-list');
+
 const movieDB = {
     movies: [
         "Логан",
@@ -24,29 +29,47 @@ const movieDB = {
     ]
 };
 
-const advertising = document.querySelector('.promo__adv'),
-    genre = document.querySelector('.promo__genre'),
-    bg = document.querySelector('.promo__bg'),
-    films = document.querySelectorAll('.promo__interactive-item');
-
 
 function test() {
-    advertising.remove();
 
-    genre.innerHTML = "драма";
-
-    bg.style.cssText = 'background : url("../img/bg.jpg");';
-
-    let i = 0;
-    films.forEach(item =>{
-        let film = movieDB.movies[i];
-        item.innerHTML = film;
-        i++
+    adv.forEach(item => {
+        item.remove();
     });
 
+    genre.textContent = "драма";
+
+    poster.style.cssText = 'background : url("../img/bg.jpg");';
+
+    films.innerHTML = '';
+
+    movieDB.movies.sort();
+
+
+/* Мой первый вариант */
+
+
+    // function createElement(tagName, classTag) {
+    //     for (let i = 0; i < movieDB.movies.length; i++) {
+    //         const nameOfElement = document.createElement(tagName);
+    //         nameOfElement.classList.add(classTag);
+    //         const nameOfFilm = movieDB.movies[i];
+    //         films.append(nameOfElement);
+    //         nameOfElement.textContent = (i + 1) + ') ' + nameOfFilm;
+    //     }
+    // }
+    //
+    // createElement('div', 'promo__interactive-item');
+
+
+    movieDB.movies.forEach((film, i) => {
+        films.innerHTML += `
+    <li class="promo__interactive-item">${(i + 1)}) ${film}
+        <div class="delete"></div>
+    </li>`;
+    })
 }
 
-test ();
+test();
 
 
 
