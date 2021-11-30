@@ -17,7 +17,9 @@
 const adv = document.querySelectorAll('.promo__adv img'),
     poster = document.querySelector('.promo__bg'),
     genre = poster.querySelector('.promo__genre'),
-    films = document.querySelector('.promo__interactive-list');
+    films = document.querySelector('.promo__interactive-list'),
+    filmForm = document.querySelector('.add'),
+    btnSubmit = filmForm.querySelector('button');
 
 const movieDB = {
     movies: [
@@ -25,12 +27,12 @@ const movieDB = {
         "Лига справедливости",
         "Ла-ла лэнд",
         "Одержимость",
-        "Брюс Всемогущий"
+        "Скотт Пилигрим против всех"
     ]
 };
 
 
-function test() {
+function start() {
 
     adv.forEach(item => {
         item.remove();
@@ -39,29 +41,35 @@ function test() {
     genre.textContent = "драма";
 
     poster.style.cssText = 'background : url("../img/bg.jpg");';
-
-    films.innerHTML = '';
-
-    movieDB.movies.sort();
+}
 
 
 /* Мой первый вариант */
 
 
-    // function createElement(tagName, classTag) {
-    //     for (let i = 0; i < movieDB.movies.length; i++) {
-    //         const nameOfElement = document.createElement(tagName);
-    //         nameOfElement.classList.add(classTag);
-    //         const nameOfFilm = movieDB.movies[i];
-    //         films.append(nameOfElement);
-    //         nameOfElement.textContent = (i + 1) + ') ' + nameOfFilm;
-    //     }
-    // }
-    //
-    // createElement('div', 'promo__interactive-item');
+// function createElement(tagName, classTag) {
+//     for (let i = 0; i < movieDB.movies.length; i++) {
+//         const nameOfElement = document.createElement(tagName);
+//         nameOfElement.classList.add(classTag);
+//         const nameOfFilm = movieDB.movies[i];
+//         films.append(nameOfElement);
+//         nameOfElement.textContent = (i + 1) + ') ' + nameOfFilm;
+//     }
+// }
+//
+// createElement('div', 'promo__interactive-item');
 
+function filmsUpdate () {
+
+    films.innerHTML = '';
+
+    movieDB.movies.sort();
 
     movieDB.movies.forEach((film, i) => {
+        if (film.length > 21) {
+            film = film.substr(0, 21);
+            film += '...';
+        }
         films.innerHTML += `
     <li class="promo__interactive-item">${(i + 1)}) ${film}
         <div class="delete"></div>
@@ -69,7 +77,23 @@ function test() {
     })
 }
 
-test();
 
 
 
+
+
+start();
+
+filmsUpdate();
+
+btnSubmit.addEventListener('click', (event) => {
+    event.preventDefault();
+    let newFilm = filmForm.querySelector('.adding__input');
+    if (newFilm.value !== '' && newFilm.value !== null) {
+        movieDB.movies.push(newFilm.value);
+    }
+    newFilm.value = '';
+    movieDB.movies.sort();
+    console.log(movieDB.movies)
+    filmsUpdate();
+});
