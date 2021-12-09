@@ -1,14 +1,13 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', () => {
 
-/*Переменные и ДБ*/
+    /*Переменные и ДБ*/
 
     const adv = document.querySelectorAll('.promo__adv img'),
         poster = document.querySelector('.promo__bg'),
         genre = poster.querySelector('.promo__genre'),
         listFilms = document.querySelector('.promo__interactive-list'),
         filmForm = document.querySelector('.add'),
-        btnSubmit = filmForm.querySelector('button'),
         btnCheckBox = filmForm.querySelector('[type=checkbox]');
 
     const movieDB = {
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-/*Функции*/
+    /*Функции*/
 
     function dbSort() {
         movieDB.movies.sort(function (a, b) {
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         genre.textContent = "драма";
         poster.style.cssText = 'background : url("../img/bg.jpg");';
-        dbSort();
     }
 
     /* Мой первый вариант */
@@ -56,36 +54,42 @@ document.addEventListener('DOMContentLoaded', () => {
 // createElement('div', 'promo__interactive-item');
 
     function filmsUpdate(films, parent) {
+        dbSort();
         parent.innerHTML = '';
         films.forEach((film, i) => {
             if (film.length > 21) {
-                film = film.substr(0, 21);
-                film += '...';
+                film = `${film.substr(0, 21)}...`;
             }
             parent.innerHTML += `
     <li class="promo__interactive-item">${(i + 1)}) ${film}
         <div class="delete"></div>
     </li>`;
+        });
+
+        document.querySelectorAll('.delete').forEach((btn, i) => {
+            btn.addEventListener('click', () => {
+                movieDB.movies.splice(i, 1);
+                filmsUpdate(films, parent);
+            });
         })
     }
 
-/* Действия */
+    /* Действия */
 
     start();
 
     filmsUpdate(movieDB.movies, listFilms);
 
-    btnSubmit.addEventListener('click', (event) => {
+    filmForm.addEventListener('submit', (event) => {
         event.preventDefault();
         let newFilm = filmForm.querySelector('.adding__input');
-        if (newFilm.value !== '' && newFilm.value !== null) {
+        if (newFilm.value) {
             movieDB.movies.push(newFilm.value);
         }
-        dbSort();
         filmsUpdate(movieDB.movies, listFilms);
         if (btnCheckBox.checked) {
-            console.log('Добавлен мой любимый фильм!');
+            alert('Добавлен мой любимый фильм!');
         }
-        filmForm.reset();
+        event.target.reset();
     });
 });
